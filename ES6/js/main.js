@@ -54,6 +54,7 @@ var deleteDetails = function deleteDetails() {
         displayMessage(dangerClass, _messageString);
         return;
     }
+
     var tableBody = document.getElementById("tableBodyRef");
     var count = 0;
     var lengthOfArray = tableBody.childElementCount;
@@ -62,9 +63,9 @@ var deleteDetails = function deleteDetails() {
         if (tableBody.childNodes[i].firstChild.firstChild.checked == true) {
             count++;
             tableBody.removeChild(tableBody.childNodes[i]);
-            serialNo--;
         }
     }
+    serialNo -= count;
     var messageString = "<center> <strong>" + count + "</strong> entries removed!</center>";
     if (count == 0) {
         messageString = "<center> <strong>No CheckBox Checked!</strong> </center>";
@@ -78,7 +79,6 @@ var deleteDetails = function deleteDetails() {
 
 var addDetails = function addDetails() {
     document.getElementById("deleteButton").disabled = false;
-    serialNo++;
     var nameRef = document.getElementById("name");
     var name = nameRef.value;
     var rollRef = document.getElementById("roll");
@@ -88,11 +88,18 @@ var addDetails = function addDetails() {
     var streamRef = document.getElementById("stream");
     var stream = streamRef.value;
 
+    if (isPresent(roll, "-1")) {
+        var message = "<center><strong>" + roll + "</strong> already exists</center>";
+        displayMessage(dangerClass, message);
+        return;
+    }
+
     //    let name = "Daman";
     //    let roll = 151;
     //    let passYear = 2014;
     //    let stream="CSE";
     if (validator(nameRef, rollRef, passYearRef, streamRef) == false) return;
+    serialNo++;
     createNewEntry(name, roll, passYear, stream);
     var messageString = "<center> <strong>" + roll + "</strong> inserted successfully </center>";
     displayMessage(successClass, messageString);
@@ -216,6 +223,7 @@ var createNewEntry = function createNewEntry(name, roll, passYear, stream) {
 };
 
 var editDetails = function editDetails(buttonId) {
+    var tableBody = document.getElementById("tableBodyRef");
     var parentRow = document.getElementById("row" + buttonId);
     var editButton = document.getElementById(buttonId);
     var inputNode = document.getElementById("addDetailsInput");
@@ -224,6 +232,35 @@ var editDetails = function editDetails(buttonId) {
         for (var i = 1; i < 5; i++) {
             parentRow.childNodes[i].firstChild.disabled = false;
         }
+
+        //Disabling other edit buttons
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+            for (var _iterator = tableBody.childNodes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var node = _step.value;
+
+                if (parentRow.id != node.id) {
+                    node.childNodes[5].firstChild.disabled = true;
+                }
+            }
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return) {
+                    _iterator.return();
+                }
+            } finally {
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
+
         editButton.className = "btn btn-success";
         editButton.value = "Ok";
     } else {
@@ -233,11 +270,78 @@ var editDetails = function editDetails(buttonId) {
         streamId = parentRow.childNodes[4].firstChild;
         if (!validator(nameId, rollId, passYearId, streamId)) return;
 
+        if (isPresent(rollId.value, parentRow.id)) {
+            var _message = "<center><strong>" + rollId.value + "</strong> already exists</center>";
+            displayMessage(dangerClass, _message);
+            return;
+        }
         for (var _i = 1; _i < 5; _i++) {
             parentRow.childNodes[_i].firstChild.disabled = true;
         }
+
+        //Re-Enabling other edit buttons
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+            for (var _iterator2 = tableBody.childNodes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                var _node = _step2.value;
+
+                _node.childNodes[5].firstChild.disabled = false;
+            }
+        } catch (err) {
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                    _iterator2.return();
+                }
+            } finally {
+                if (_didIteratorError2) {
+                    throw _iteratorError2;
+                }
+            }
+        }
+
         editButton.className = "btn btn-primary";
         editButton.value = "Edit";
-        displayMessage(successClass, "<center><strong>Edited</stream> successfully!</center>");
+        var message = "<center><strong>Edited</stream> successfully!</center>";
+        displayMessage(successClass, message);
     }
+};
+
+var isPresent = function isPresent(roll, rowId) {
+    var tableBody = document.getElementById("tableBodyRef");
+    var _iteratorNormalCompletion3 = true;
+    var _didIteratorError3 = false;
+    var _iteratorError3 = undefined;
+
+    try {
+        for (var _iterator3 = tableBody.childNodes[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+            var node = _step3.value;
+
+            //console.log(node.childNodes[2].firstChild.value);
+            var nodeValRef = node.childNodes[2].firstChild;
+            if (roll == nodeValRef.value && rowId != node.id) {
+                return true;
+            }
+        }
+    } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                _iterator3.return();
+            }
+        } finally {
+            if (_didIteratorError3) {
+                throw _iteratorError3;
+            }
+        }
+    }
+
+    return false;
 };

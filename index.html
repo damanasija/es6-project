@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +8,19 @@
     <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
     <title>ES6 Project</title>
 </head>
+
 <body>
     <div class="container">
-        <h1 class="text-center">Admin Page</h1>
+        <h1 class="text-center">Student Details</h1>
+        <hr>
         <div class="row col-md-12">
             <!--Display here: Name, Rollno, Passout year andStream-->
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Delete</th>
+                        <th>
+                            <input type="checkbox" name="deleteAll" id="selectAll" disabled onclick="toggleAll()"> Delete
+                        </th>
                         <th>Name</th>
                         <th>Roll No</th>
                         <th>Passout Year</th>
@@ -26,8 +31,11 @@
                 <tbody id="tableBodyRef"></tbody>
             </table>
         </div>
-    
-        <br><br><br><br>
+
+        <br>
+        <br>
+        <br>
+        <br>
 
         <div class="row text-center">
             <div class="col-md-6">
@@ -35,23 +43,26 @@
             </div>
             <div class="col-md-6">
                 <button class="btn btn-warning" id="deleteButton" disabled="true" onclick="toggleDeleteDetails()">Remove Details</button>
-            </div>        
+            </div>
         </div>
 
         <br>
+
         <div class="row text-center">
             <div class="col-md-6">
             </div>
             <div class="col-md-6" id="deleteDetailsInput" style="display: none">
                 <input class="btn btn-danger" type="button" name="delete" value="Delete" onclick="deleteDetails()">
-            </div>        
+            </div>
         </div>
-    
+
         <div class="container" id="message">
         </div>
 
         <!-- Input fields to enter Name, Rollno, Passout year andStream-->
-        <br><br><br>
+        <br>
+        <br>
+        <br>
         <div class="container">
             <div id="addDetailsInput" style="display: none">
                 <div class="form-group">
@@ -70,17 +81,13 @@
                     <label for="stream">Stream:</label>
                     <input class="form-control" type="text" id="stream" name="stream" placeholder="Stream">
                 </div>
-                <input class="btn btn-success" type="button" name="add" value="Add" onclick="addDetails()">
+                <input class="btn btn-success col-md-12" type="button" name="add" value="Add" onclick="addDetails()">
             </div>
         </div>
-
-        <div class="container">
-            
-                
-        </div>
-
-        <br><br>
+        <br>
+        <br>
 
     </div>
 </body>
+
 </html>
