@@ -83,7 +83,6 @@ const deleteDetails = () => {
 
 const addDetails = () => {
     document.getElementById("deleteButton").disabled=false;
-    serialNo++;
     let nameRef = document.getElementById("name");
     let name = nameRef.value;
     let rollRef = document.getElementById("roll");
@@ -105,6 +104,7 @@ const addDetails = () => {
 //    let stream="CSE";
     if(validator(nameRef, rollRef, passYearRef, streamRef) == false)
         return;
+    serialNo++;
     createNewEntry(name, roll, passYear, stream);
     let messageString = `<center> <strong>${roll}</strong> inserted successfully </center>`;
     displayMessage(successClass, messageString);
